@@ -5,6 +5,7 @@ using System.Net;
 
 using MiniJSON;
 
+[ExecuteInEditMode]
 public class HueLamp : MonoBehaviour {
 	public string devicePath;
 	public bool on = true;

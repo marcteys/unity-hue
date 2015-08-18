@@ -14,12 +14,6 @@ public class HueLamp : MonoBehaviour {
 	private bool oldOn;
 	private Color oldColor;
 	
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
 	void Update () {
 		if (oldOn != on || oldColor != color) {
 			HueBridge bridge = GetComponentInParent<HueBridge>();
@@ -35,6 +29,7 @@ public class HueLamp : MonoBehaviour {
 			state ["hue"] = (int)(hsv.x / 360.0f * 65535.0f);
 			state ["sat"] = (int)(hsv.y * 255.0f);
 			state ["bri"] = (int)(hsv.z * 255.0f);
+            if ((int)(hsv.z * 255.0f) == 0) state["on"] = false;
 
 			byte[] bytes = System.Text.Encoding.ASCII.GetBytes (Json.Serialize (state));
 			request.ContentLength = bytes.Length;
@@ -56,7 +51,7 @@ public class HueLamp : MonoBehaviour {
 		float max = Mathf.Max(rgb.r, Mathf.Max(rgb.g, rgb.b));
 		float min = Mathf.Min(rgb.r, Mathf.Min(rgb.g, rgb.b));
 		
-		float brightness = max;
+		float brightness = rgb.a;
 		
 		float hue, saturation;
 		if (max == min) {
